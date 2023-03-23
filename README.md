@@ -7,9 +7,9 @@ This repository contains my homework for the teaching unit SECG4.
 
 ## Homework
 ```
-└── files
 └── util
+    ├── frequency_analysis.py
+    └── preprocess.py
 └── cesar.py
 └── vernam.py
-└── requirements.txt
 ```

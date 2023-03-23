@@ -1,11 +1,23 @@
-def cesar(text, key, mode):
-    #file = open('./files/uncipher.txt', 'r')
-    #for line in file:
-    #    print(line)
-    #file.close()
+import argparse
+from util import preprocess, frequency_analysis
+
+def cesar(input_file, output_file, key=None, mode='encode'):
+    with open(input_file, 'r', encoding='utf-8') as file:
+        text = file.read()
+    
+    text_no_dia = preprocess.removeDiacritics(text)
+    sanitized_text = preprocess.sanitizeToAlpha(text_no_dia)
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    
+    if key is None:
+        if mode == 'encode':
+            raise ValueError("Cannot encode without a key.")
+        else:
+            key = frequency_analysis.findLikelyKey(sanitized_text)
+            print(f"Using key {key} for decoding.")
+    
     result = ''
-    for letter in text:
+    for letter in sanitized_text:
         if letter in alphabet:
             letter_index = alphabet.find(letter)
             if mode == 'encode':
@@ -14,7 +26,17 @@ def cesar(text, key, mode):
                 result += alphabet[(letter_index - key) % 26]
         else:
             result += letter
-    print(result)
+
+    with open(output_file, 'w', encoding='utf-8') as file:
+        file.write(result)
+    
     return result
 
-cesar('hello', 1, 'encode')
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Cesar cipher encoder/decoder')
+    parser.add_argument('input_file', type=str, help='Input file')
+    parser.add_argument('output_file', type=str, help='Output file')
+    parser.add_argument('--key', type=int, help='Key to use for encoding/decoding')
+    parser.add_argument('--mode', type=str, help='Mode to use (encode/decode)', default='encode')
+    args = parser.parse_args()
+    cesar(args.input_file, args.output_file, args.key, args.mode)
