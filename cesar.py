@@ -9,21 +9,17 @@ def cesar(input_file, output_file, key=None, mode='encode'):
     sanitized_text = preprocess.sanitize_to_alpha(text_no_dia)
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     
-    if key is None:
-        if mode == 'encode':
-            raise ValueError("Cannot encode without a key.")
-        else:
-            key = secret.find_key(sanitized_text)
-            print(f"Using key {key} for decoding.")
+    if key is None and mode == 'encode':
+        raise ValueError("Cannot encode without a key.")
+    
+    key = key or secret.find_key(sanitized_text)
+    print(f"Using key '{key}' to {mode}")
     
     result = ''
     for letter in sanitized_text:
         if letter in alphabet:
             letter_index = alphabet.find(letter)
-            if mode == 'encode':
-                result += alphabet[(letter_index + key) % 26]
-            elif mode == 'decode':
-                result += alphabet[(letter_index - key) % 26]
+            result += alphabet[(letter_index + key * (-1 if mode == 'decode' else 1)) % 26]
         else:
             result += letter
 
