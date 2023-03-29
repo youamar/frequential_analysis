@@ -1,5 +1,5 @@
 # Frequential Analysis
-This repository contains my homework for the teaching unit SECG4.
+This repository contains our homework for the teaching unit SECG4.
 
 ## Developers
 - 54915 - Yahya OUAMAR
@@ -8,8 +8,8 @@ This repository contains my homework for the teaching unit SECG4.
 ## Homework
 ```
 └── util
-    ├── frequency_analysis.py
-    └── preprocess.py
+    ├── preprocess.py
+    └── secret.py
 └── cesar.py
 └── vernam.py
 ```

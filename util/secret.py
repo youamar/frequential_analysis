@@ -1,4 +1,4 @@
-def findLikelyKey(text):
+def find_key(text):
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     letter_frequencies = {}
     for letter in text:
@@ -12,3 +12,14 @@ def findLikelyKey(text):
     most_frequent_letter_index = alphabet.find(most_frequent_letter)
     key = (most_frequent_letter_index - alphabet.find('e')) % 26
     return key
+
+def extend_key(key, text):
+    long_key = ''
+    for i in range(len(text)):
+        long_key += key[i % len(key)]
+    return long_key
+
+def bitwise_xor(a, b):
+    if((a^b)>=26):
+        return (a^b)-26
+    return a^b

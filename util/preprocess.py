@@ -1,7 +1,7 @@
 import unicodedata
 import re
 
-def removeDiacritics(text):
+def remove_diacritics(text):
     """
     Remove diacritics.
     Only the diacritics are removed, not the whole character.
@@ -11,7 +11,7 @@ def removeDiacritics(text):
                    if not unicodedata.combining(c))
 
 
-def sanitizeToAlpha(text):
+def sanitize_to_alpha(text):
     """
     Sanitize the given string to only lowercase alphabetic characters.
 
@@ -20,4 +20,4 @@ def sanitizeToAlpha(text):
     alphabetic character.
     All remaining non-alphabetic characters are removed.
     """
-    return re.sub(r'[^a-z]', '', removeDiacritics(text.lower()))
+    return re.sub(r'[^a-z]', '', remove_diacritics(text.lower()))

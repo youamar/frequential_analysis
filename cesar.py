@@ -1,19 +1,19 @@
 import argparse
-from util import preprocess, frequency_analysis
+from util import preprocess, secret
 
 def cesar(input_file, output_file, key=None, mode='encode'):
     with open(input_file, 'r', encoding='utf-8') as file:
         text = file.read()
     
-    text_no_dia = preprocess.removeDiacritics(text)
-    sanitized_text = preprocess.sanitizeToAlpha(text_no_dia)
+    text_no_dia = preprocess.remove_diacritics(text)
+    sanitized_text = preprocess.sanitize_to_alpha(text_no_dia)
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     
     if key is None:
         if mode == 'encode':
             raise ValueError("Cannot encode without a key.")
         else:
-            key = frequency_analysis.findLikelyKey(sanitized_text)
+            key = secret.find_key(sanitized_text)
             print(f"Using key {key} for decoding.")
     
     result = ''
