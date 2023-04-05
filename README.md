@@ -12,4 +12,5 @@ This repository contains our homework for the teaching unit SECG4.
     └── secret.py
 └── cesar.py
 └── vernam.py
+└── plain_text.txt
 ```
