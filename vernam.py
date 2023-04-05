@@ -1,36 +1,23 @@
 import argparse
-from util import preprocess, secret
+from util import secret
 
 def vernam(input_file, output_file, key=None, mode='encode'):
     with open(input_file, 'r', encoding='utf-8') as f:
-        text = preprocess.sanitize_to_alpha(preprocess.remove_diacritics(f.read()))
-    
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    sanitized_key = None
-    if key is not None:
-        sanitized_key = preprocess.sanitize_to_alpha(preprocess.remove_diacritics(key))
-    elif mode == 'encode':
+        text = f.read()
+
+    if key is None and mode == 'encode':
         raise ValueError("Cannot encode without a key.")
-    else:
-        # sanitized_key = # todo find most likely key
-        print("Using default key for decoding.")
-    
-    new_key = secret.extend_key(sanitized_key, text)
-    
-    result = ''
-    for i, char in enumerate(text):
-        if char not in alphabet:
-            result += char
-            continue
-        letter_index = alphabet.find(char)
-        key_index = alphabet.find(new_key[i])
-        result += alphabet[secret.bitwise_xor(letter_index, key_index)]
-    
+    elif key is None:
+        key = secret.find_vernam_key(text)
+        print()
+
+    print(f"Using key '{key}' to {mode}")
+    result = secret.vernam_cipher(text, key)
+
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(result)
-    
-    return result
 
+    return result
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Vernam cipher encoder/decoder')

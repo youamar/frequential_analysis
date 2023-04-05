@@ -2,29 +2,22 @@ import argparse
 from util import preprocess, secret
 
 def cesar(input_file, output_file, key=None, mode='encode'):
-    with open(input_file, 'r', encoding='utf-8') as file:
-        text = file.read()
+    with open(input_file, 'r', encoding='utf-8') as f:
+        text = f.read()
     
     text_no_dia = preprocess.remove_diacritics(text)
     sanitized_text = preprocess.sanitize_to_alpha(text_no_dia)
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'
     
     if key is None and mode == 'encode':
         raise ValueError("Cannot encode without a key.")
     
-    key = key or secret.find_key(sanitized_text)
+    key = key or secret.find_cesar_key(sanitized_text)
     print(f"Using key '{key}' to {mode}")
     
-    result = ''
-    for letter in sanitized_text:
-        if letter in alphabet:
-            letter_index = alphabet.find(letter)
-            result += alphabet[(letter_index + key * (-1 if mode == 'decode' else 1)) % 26]
-        else:
-            result += letter
+    result = secret.cesar_cipher(key, sanitized_text, mode)
 
-    with open(output_file, 'w', encoding='utf-8') as file:
-        file.write(result)
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(result)
     
     return result
 
