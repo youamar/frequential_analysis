@@ -63,7 +63,3 @@ To decode the input.txt file using the key "secret" and store the result in outp
 ```
 python vernam.py --key secret --mode decode input.txt output.txt
 ```
-
-## Authors
-- 54915 - Yahya OUAMAR
-- 57396 - Sacha YOKO
